@@ -8,6 +8,7 @@ import { MaskA } from "./maskA";
 import { MouseMgr } from "../core/mouseMgr";
 import { FinishShader } from "../glsl/finishShader";
 import { MaskB } from "./maskB";
+import { MyObject3D } from "../webgl/myObject3D";
 
 export class EffectA extends Canvas {
 
@@ -15,8 +16,7 @@ export class EffectA extends Canvas {
 
   // マスク用シーン
   private _maskScene: Capture
-  private _mask: MaskA
-  // private _mask: MaskB
+  private _mask: MyObject3D
 
   // 描画用シーン
   private _destScene: Capture
@@ -61,8 +61,8 @@ export class EffectA extends Canvas {
         fragmentShader: FinishShader.fragmentShader,
         transparent: true,
         uniforms:{
-          destTex:{value: this._destScene.texture()},
-          maskTex:{value: this._maskScene.texture()},
+          destTex:{value: this._destScene.texture()}, // 描画シーンの描画先テクスチャ
+          maskTex:{value: this._maskScene.texture()}, // マスクシーンの描画先テクスチャ
         }
       })
     )
@@ -82,8 +82,9 @@ export class EffectA extends Canvas {
     const s = Math.max(w, h) * 1
     this._mesh.scale.set(s, s, 1)
 
-    this._mesh.position.x = MouseMgr.instance.easeNormal.x * -w * 0.1
-    this._mesh.position.y = MouseMgr.instance.easeNormal.y * w * 0.1
+    // 画像を動かす
+    // this._mesh.position.x = MouseMgr.instance.easeNormal.x * -w * 0.1
+    // this._mesh.position.y = MouseMgr.instance.easeNormal.y * w * 0.1
 
     // マスク用シーンのレンダリング
     this._maskScene.render(this.renderer, this.cameraPers)
@@ -92,7 +93,7 @@ export class EffectA extends Canvas {
     this._destScene.render(this.renderer, this.cameraPers)
 
     // レンダリング
-    this.renderer.setClearColor(0x000000, 1)
+    this.renderer.setClearColor(0x000000, 0)
     this.renderer.render(this.mainScene, this.cameraPers)
   }
 
@@ -103,6 +104,7 @@ export class EffectA extends Canvas {
     const w = Func.sw()
     const h = Func.sh()
 
+    // シーンのサイズを決める
     this._maskScene.setSize(w, h)
     this._destScene.setSize(w, h)
 

@@ -4,3 +4,18 @@
 .p-top {
   ///
 }
+
+.bg {
+  @include g.pos(fixed);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 200px;
+  font-weight: bolder;
+  color: blue;
+  font-style: italic;
+}

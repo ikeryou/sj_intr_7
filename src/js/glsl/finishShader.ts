@@ -20,6 +20,7 @@ const FinishShader = {
       vec4 d = texture2D(destTex, vUv);
       vec4 m = texture2D(maskTex, vUv);
 
+      // r=1.0なら描画
       d.a = m.r;
 
       gl_FragColor = d;

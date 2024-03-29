@@ -1,4 +1,4 @@
-import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three'
+import { CircleGeometry, DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three'
 import { MyObject3D } from '../webgl/myObject3D'
 import { Func } from '../core/func'
 import { Util } from '../libs/util'
@@ -13,8 +13,12 @@ export class MaskA extends MyObject3D {
     super()
 
     const geo = new PlaneGeometry(1, 1)
+
+    // 円でもOK
+    // const geo = new CircleGeometry(0.5, 64)
+    
     const mat = new MeshBasicMaterial({
-      color: 0xff0000,
+      color: 0xff0000, // RGBのRをマスク判定用に使うので色は赤に
       transparent: true,
       side: DoubleSide
     })
@@ -45,7 +49,7 @@ export class MaskA extends MyObject3D {
       const ix = i % this._line
       const iy = Math.floor(i / this._line)
 
-      const scale = Util.map(Math.sin(Util.radian(ix * iy * 10 + this._c * 2)), 0.01, 1, -1, 1)
+      const scale = Util.map(Math.sin(Util.radian(ix * iy * 10 + this._c * 3)), 0.01, 1, -1, 1)
 
       if(this._line > 1) {
         mesh.position.x = ix * size - sw / 2 + size / 2
@@ -54,6 +58,7 @@ export class MaskA extends MyObject3D {
       
       mesh.scale.set(size * scale, size * scale, 1)
 
+      // 3D回転してもOK
       // mesh.rotation.y = Util.radian(ix * iy * 10 + this._c * 5)
     })
   }
